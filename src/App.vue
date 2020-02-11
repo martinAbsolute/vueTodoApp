@@ -1,12 +1,28 @@
 <template>
-  <div id="app">
+  <div id="app" v-bind:class="{ 'dark-mode': darkModeActive }">
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
+    <button @click="toggleDarkMode">Toggle Darkmode</button>
   </div>
 </template>
+
+<script>
+import { Component, Vue } from "vue-property-decorator";
+import store from "./store";
+
+@Component
+export default class App extends Vue {
+  get darkModeActive() {
+    return store.state.darkMode;
+  }
+  toggleDarkMode() {
+    store.commit("toggleDarkMode");
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -28,5 +44,9 @@
       color: #42b983;
     }
   }
+}
+
+.dark-mode {
+  background-color: dimgrey;
 }
 </style>
