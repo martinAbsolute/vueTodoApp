@@ -76,9 +76,11 @@ export default class TaskCard extends Vue {
 <style scoped lang="scss">
 .card {
   padding-top: 1rem;
+  margin: 1.5rem;
   font-size: 1.5rem;
   list-style: none;
   background-color: pink;
+  box-shadow: 10px 10px 12px 0px rgba(0, 0, 0, 0.75);
   display: block;
 }
 li {
