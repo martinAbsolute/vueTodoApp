@@ -1,4 +1,4 @@
-# vuetest3
+# Vue To-do App
 
 ## Project setup
 ```
