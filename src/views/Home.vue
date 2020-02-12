@@ -1,20 +1,26 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <TodoContainer />
     <TodoForm />
+    <TodoContainer v-bind:todos="todos" />
   </div>
 </template>
 
 <script>
+import { Component, Vue } from "vue-property-decorator";
 import TodoContainer from "@/components/TodoContainer.vue";
 import TodoForm from "@/components/TodoForm.vue";
+import store from "@/store";
 
-export default {
-  name: "Home",
+@Component({
   components: {
     TodoContainer,
     TodoForm
   }
-};
+})
+export default class Home extends Vue {
+  get todos() {
+    return store.state.todos.reverse();
+  }
+}
 </script>

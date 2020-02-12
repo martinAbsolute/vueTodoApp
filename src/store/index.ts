@@ -15,7 +15,7 @@ export default new Vuex.Store({
       state.darkMode = !state.darkMode;
     },
 
-    saveToLocalStorage(state) {
+    submitAllTodos(state) {
       localStorage.setItem("todos", JSON.stringify(state.todos));
     },
 
@@ -50,19 +50,19 @@ export default new Vuex.Store({
   actions: {
     addTodo({ commit }, payload) {
       commit("addTodo", payload);
-      commit("saveToLocalStorage");
+      commit("submitAllTodos");
     },
     deleteTodo({ commit }, payload) {
       commit("deleteTodo", payload);
-      commit("saveToLocalStorage");
+      commit("submitAllTodos");
     },
     editTodo({ commit }, payload) {
       commit("editTodo", payload);
-      commit("saveToLocalStorage");
+      commit("submitAllTodos");
     },
     toggleTodoCompleted({ commit }, payload) {
       commit("toggleTodoCompleted", payload);
-      commit("saveToLocalStorage");
+      commit("submitAllTodos");
     }
   },
   modules: {}

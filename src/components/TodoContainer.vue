@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div v-for="todo in todos" :key="todo.id">
+    <ul v-for="todo in todos" :key="todo.id">
       <TodoCard
         v-bind:id="todo.id"
         :title="todo.title"
         :completed="todo.completed"
       />
-    </div>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import TodoCard from "./TodoCard.vue";
-import store from "../store";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import TodoCard from "@/components/TodoCard.vue";
+import Todo from "@/types/Todo";
 
 @Component({
   components: {
@@ -21,9 +21,7 @@ import store from "../store";
   }
 })
 export default class TaskContainer extends Vue {
-  get todos() {
-    return store.state.todos;
-  }
+  @Prop() private todos!: Todo[];
 }
 </script>
 

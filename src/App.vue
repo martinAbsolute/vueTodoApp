@@ -5,7 +5,9 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
-    <button @click="toggleDarkMode">Toggle Darkmode</button>
+    <button class="button-darkmode" @click="toggleDarkMode">
+      Toggle Darkmode
+    </button>
   </div>
 </template>
 
@@ -31,6 +33,7 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
 }
 
 #nav {
@@ -38,15 +41,21 @@ export default class App extends Vue {
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: pink;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: red;
     }
   }
 }
 
 .dark-mode {
-  background-color: dimgrey;
+  background-color: #2c3e50;
+}
+
+.button-darkmode {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
