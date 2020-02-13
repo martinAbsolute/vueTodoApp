@@ -49,7 +49,6 @@ export default new Vuex.Store({
 
     swapTodos(state, { firstId, secondId }) {
       const todos = [...state.todos];
-      console.log(state.todos);
       const firstIndex = todos.findIndex((todo: Todo) => todo.id === firstId);
       const secondIndex = todos.findIndex((todo: Todo) => todo.id === secondId);
       if (firstIndex !== undefined && secondIndex !== undefined) {
