@@ -45,6 +45,19 @@ export default new Vuex.Store({
       if (todoIndex !== undefined) {
         state.todos[todoIndex].completed = !state.todos[todoIndex].completed;
       }
+    },
+
+    swapTodos(state, { firstId, secondId }) {
+      const todos = [...state.todos];
+      console.log(state.todos);
+      const firstIndex = todos.findIndex((todo: Todo) => todo.id === firstId);
+      const secondIndex = todos.findIndex((todo: Todo) => todo.id === secondId);
+      if (firstIndex !== undefined && secondIndex !== undefined) {
+        const temp = todos[firstIndex];
+        todos[firstIndex] = todos[secondIndex];
+        todos[secondIndex] = temp;
+        state.todos = todos;
+      }
     }
   },
   actions: {
@@ -58,6 +71,10 @@ export default new Vuex.Store({
     },
     editTodo({ commit }, payload) {
       commit("editTodo", payload);
+      commit("submitAllTodos");
+    },
+    swapTodos({ commit }, payload) {
+      commit("swapTodos", payload);
       commit("submitAllTodos");
     },
     toggleTodoCompleted({ commit }, payload) {

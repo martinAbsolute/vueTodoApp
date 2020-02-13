@@ -1,5 +1,12 @@
 <template>
-  <div v-bind:class="{ 'dark-mode': darkModeActive, completed }" class="card">
+  <div
+    v-bind:class="{ 'dark-mode': darkModeActive, completed }"
+    class="card"
+    draggable="true"
+    @dragstart="dragStart"
+    @drop="drop"
+    @dragover="allowDrop"
+  >
     <li>
       <input
         v-if="!unsaved"
@@ -32,7 +39,7 @@ import store from "@/store";
 
 @Component
 export default class TaskCard extends Vue {
-  @Prop() private id!: number;
+  @Prop() private id!: string;
   @Prop() private title!: string;
   @Prop() private completed!: boolean;
 
@@ -52,6 +59,24 @@ export default class TaskCard extends Vue {
     if (newTitle !== oldTitle) {
       this.unsaved = true;
       this.debouncedHandleEdit();
+    }
+  }
+
+  dragStart(event: DragEvent) {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData("id", this.id);
+    }
+  }
+
+  allowDrop(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  drop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      const draggedId = event.dataTransfer.getData("id");
+      store.dispatch("swapTodos", { firstId: draggedId, secondId: this.id });
     }
   }
 

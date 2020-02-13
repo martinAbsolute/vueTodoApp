@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" height="100px" />
     <TodoForm />
-    <TodoContainer v-bind:todos="todos" />
+    <TodoContainer :todos="todos" />
   </div>
 </template>
 
