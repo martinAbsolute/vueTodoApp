@@ -2,21 +2,21 @@
   <form @submit="handleSubmit">
     <input
       type="text"
-      name="todo"
+      name="todo-title"
       placeholder="Water the plants..."
-      v-model="title"
+      v-model.trim="title"
     />
-    <button type="submit">Submit</button>
+    <button type="submit">Add</button>
   </form>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import store from "../store";
+import store from "@/store";
 
 @Component
 export default class TodoForm extends Vue {
-  title = "";
+  private title = "";
 
   handleSubmit(event: Event): void {
     event.preventDefault();

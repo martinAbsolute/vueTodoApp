@@ -17,7 +17,7 @@
       />
       <textarea
         type="text"
-        v-model="editableTitle"
+        v-model.trim="editableTitle"
         v-bind:disabled="completed"
       />
     </li>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import _ from "lodash";
-import store from "../store";
+import store from "@/store";
 
 @Component
 export default class TaskCard extends Vue {

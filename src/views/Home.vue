@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <img alt="Vue logo" src="../assets/logo.png" height="100px" />
     <TodoForm />
     <TodoContainer v-bind:todos="todos" />
   </div>
@@ -20,7 +20,7 @@ import store from "@/store";
 })
 export default class Home extends Vue {
   get todos() {
-    return store.state.todos.reverse();
+    return store.state.todos;
   }
 }
 </script>
