@@ -56,10 +56,26 @@ export default class TaskCard extends Vue {
 
   @Watch("editableTitle")
   onTitleChange(newTitle: string, oldTitle: string) {
-    if (newTitle !== oldTitle) {
+    if (newTitle !== oldTitle && newTitle !== "") {
       this.unsaved = true;
       this.debouncedHandleEdit();
     }
+  }
+
+  handleEdit() {
+    store
+      .dispatch("editTodo", { id: this.id, title: this.editableTitle })
+      .then(() => {
+        this.unsaved = false;
+      });
+  }
+
+  handleDelete() {
+    store.dispatch("deleteTodo", { id: this.id });
+  }
+
+  handleToggleComplete() {
+    store.dispatch("toggleTodoCompleted", { id: this.id });
   }
 
   dragStart(event: DragEvent) {
@@ -78,22 +94,6 @@ export default class TaskCard extends Vue {
       const draggedId = event.dataTransfer.getData("id");
       store.dispatch("swapTodos", { firstId: draggedId, secondId: this.id });
     }
-  }
-
-  handleEdit() {
-    store
-      .dispatch("editTodo", { id: this.id, title: this.editableTitle })
-      .then(() => {
-        this.unsaved = false;
-      });
-  }
-
-  handleDelete() {
-    store.dispatch("deleteTodo", { id: this.id });
-  }
-
-  handleToggleComplete() {
-    store.dispatch("toggleTodoCompleted", { id: this.id });
   }
 }
 </script>
