@@ -3,7 +3,7 @@
     <li>
       <input
         v-if="!unsaved"
-        v-bind:checked="completed"
+        :checked="completed"
         type="checkbox"
         class="todo-checkbox"
         @click="handleToggleComplete"
@@ -18,7 +18,7 @@
       <textarea
         type="text"
         v-model.trim="editableTitle"
-        v-bind:disabled="completed"
+        :disabled="completed"
       />
     </li>
     <button @click="handleDelete" type="button" class="delete-button">X</button>

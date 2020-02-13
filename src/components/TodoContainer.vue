@@ -3,7 +3,7 @@
     <TodoCard
       v-for="todo in todos"
       :key="todo.id"
-      v-bind:id="todo.id"
+      :id="todo.id"
       :title="todo.title"
       :completed="todo.completed"
     />
