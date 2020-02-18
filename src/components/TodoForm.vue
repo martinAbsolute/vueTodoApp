@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import store from "@/store";
 
 @Component
 export default class TodoForm extends Vue {
@@ -20,7 +19,7 @@ export default class TodoForm extends Vue {
 
   handleSubmit(event: Event): void {
     event.preventDefault();
-    store.dispatch("addTodo", { title: this.title }).then(() => {
+    this.$store.dispatch("asyncAddTodo", this.title).then(() => {
       this.title = "";
     });
   }

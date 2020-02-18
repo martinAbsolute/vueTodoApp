@@ -1,8 +1,8 @@
 <template>
   <div
-    v-bind:class="{ 'dark-mode': darkModeActive, completed }"
     class="card"
     draggable="true"
+    :class="{ completed }"
     @dragstart="dragStart"
     @drop="drop"
     @dragover="allowDrop"
@@ -35,7 +35,6 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import _ from "lodash";
-import store from "@/store";
 
 @Component
 export default class TaskCard extends Vue {
@@ -50,10 +49,6 @@ export default class TaskCard extends Vue {
     this.handleEdit();
   }, 500);
 
-  get darkModeActive() {
-    return store.state.darkMode;
-  }
-
   @Watch("editableTitle")
   onTitleChange(newTitle: string, oldTitle: string) {
     if (newTitle !== oldTitle && newTitle !== "") {
@@ -63,19 +58,19 @@ export default class TaskCard extends Vue {
   }
 
   handleEdit() {
-    store
-      .dispatch("editTodo", { id: this.id, title: this.editableTitle })
+    this.$store
+      .dispatch("asyncEditTodo", { id: this.id, title: this.editableTitle })
       .then(() => {
         this.unsaved = false;
       });
   }
 
   handleDelete() {
-    store.dispatch("deleteTodo", { id: this.id });
+    this.$store.dispatch("asyncDeleteTodo", { id: this.id });
   }
 
   handleToggleComplete() {
-    store.dispatch("toggleTodoCompleted", { id: this.id });
+    this.$store.dispatch("asyncToggleTodoCompleted", { id: this.id });
   }
 
   dragStart(event: DragEvent) {
@@ -92,7 +87,10 @@ export default class TaskCard extends Vue {
     event.preventDefault();
     if (event.dataTransfer) {
       const draggedId = event.dataTransfer.getData("id");
-      store.dispatch("swapTodos", { firstId: draggedId, secondId: this.id });
+      this.$store.dispatch("asyncSwapTodos", {
+        firstId: draggedId,
+        secondId: this.id
+      });
     }
   }
 }
@@ -124,9 +122,6 @@ li {
   flex-grow: 1;
   height: 25px;
   width: 25px;
-}
-.dark-mode {
-  color: white;
 }
 .completed {
   text-decoration: line-through;

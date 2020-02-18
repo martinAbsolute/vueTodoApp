@@ -13,15 +13,14 @@
 
 <script>
 import { Component, Vue } from "vue-property-decorator";
-import store from "./store";
 
 @Component
 export default class App extends Vue {
   get darkModeActive() {
-    return store.state.darkMode;
+    return this.$store.state.DarkMode.active;
   }
   toggleDarkMode() {
-    store.commit("toggleDarkMode");
+    this.$store.commit("toggleDarkMode");
   }
 }
 </script>
@@ -51,6 +50,10 @@ export default class App extends Vue {
 
 .dark-mode {
   background-color: #2c3e50;
+  color: white;
+  h1 {
+    color: white;
+  }
 }
 
 .button-darkmode {
