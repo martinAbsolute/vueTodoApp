@@ -1,13 +1,13 @@
 <template>
-  <form @submit="handleSubmit">
-    <input
-      type="text"
-      name="todo-title"
-      placeholder="Water the plants..."
+  <v-form @submit="handleSubmit" id="todo-form">
+    <v-textarea
+      label="What do you need to do?"
       v-model.trim="title"
-    />
-    <button type="submit">Add</button>
-  </form>
+      outlined
+      auto-grow
+    ></v-textarea>
+    <v-btn type="submit" color="primary">Add</v-btn>
+  </v-form>
 </template>
 
 <script lang="ts">
@@ -25,3 +25,9 @@ export default class TodoForm extends Vue {
   }
 }
 </script>
+
+<style scoped>
+#todo-form {
+  margin: 3rem;
+}
+</style>

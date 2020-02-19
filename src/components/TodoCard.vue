@@ -1,35 +1,43 @@
 <template>
-  <div
+  <v-card
     class="card"
     draggable="true"
-    :class="{ completed }"
     @dragstart="dragStart"
     @drop="drop"
     @dragover="allowDrop"
+    elevation="10"
+    :class="{ completed }"
+    :loading="unsaved"
   >
-    <li>
-      <input
-        v-if="!unsaved"
-        :checked="completed"
-        type="checkbox"
+    <v-textarea
+      class="headline"
+      solo
+      flat
+      rows="1"
+      auto-grow
+      v-model.trim="editableTitle"
+      :disabled="completed"
+    />
+    <v-card-actions class="card-action-area">
+      <v-checkbox
+        v-model="completed"
         class="todo-checkbox"
-        @click="handleToggleComplete"
+        :indeterminate="unsaved"
+        :disabled="unsaved"
+        @change="handleToggleComplete"
       />
-      <img
-        v-else
-        alt="loader"
-        src="../assets/loader.svg"
-        height="30"
-        width="30"
-      />
-      <textarea
-        type="text"
-        v-model.trim="editableTitle"
-        :disabled="completed"
-      />
-    </li>
-    <button @click="handleDelete" type="button" class="delete-button">X</button>
-  </div>
+      <v-spacer></v-spacer>
+      <v-btn
+        @click="handleDelete"
+        right
+        raised
+        class="delete-button"
+        color="primary"
+      >
+        Delete
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -98,50 +106,9 @@ export default class TaskCard extends Vue {
 
 <style scoped lang="scss">
 .card {
-  padding-top: 1rem;
   margin: 1.5rem;
-  font-size: 1.5rem;
-  list-style: none;
-  background-color: pink;
-  box-shadow: 10px 10px 12px 0px rgba(0, 0, 0, 0.75);
-  display: block;
 }
-li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.delete-button {
-  height: 1.5rem;
-  background-color: red;
-  border: none;
-  width: 100%;
-  color: white;
-}
-.todo-checkbox {
-  flex-grow: 1;
-  height: 25px;
-  width: 25px;
-}
-.completed {
-  text-decoration: line-through;
-  background-color: rgba(255, 0, 0, 0.5);
-}
-.invisible {
-  opacity: 0;
-}
-img {
-  flex-grow: 1;
-}
-textarea {
-  resize: vertical;
-  vertical-align: middle;
-  flex-grow: 5;
-  box-sizing: border-box;
-  border: none;
-  overflow: hidden;
-  outline: none;
-  background-color: inherit;
-  font: inherit;
+.card-action-area {
+  height: 3rem;
 }
 </style>
