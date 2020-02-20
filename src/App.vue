@@ -3,13 +3,17 @@
     id="app"
     :style="{ background: this.$vuetify.theme.themes[theme].background }"
   >
-    <Header />
+    <Header>
+      <FakeTodoFetcher />
+    </Header>
     <v-content>
       <div id="nav">
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link>
       </div>
-      <router-view />
+      <transition name="view">
+        <router-view />
+      </transition>
     </v-content>
   </v-app>
 </template>
@@ -17,9 +21,10 @@
 <script>
 import { Component, Vue } from "vue-property-decorator";
 import Header from "@/components/Header";
+import FakeTodoFetcher from "@/components/FakeTodoFetcher";
 
 @Component({
-  components: { Header }
+  components: { Header, FakeTodoFetcher }
 })
 export default class App extends Vue {
   get theme() {
@@ -44,5 +49,26 @@ export default class App extends Vue {
       color: blueviolet;
     }
   }
+}
+
+.view-enter-active,
+.view-leave-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+}
+
+.view-enter-active {
+  transition-delay: 0.3s;
+}
+
+.view-enter,
+.view-leave-to {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.view-enter-to,
+.view-leave {
+  opacity: 1;
+  transform: translateY(0px);
 }
 </style>

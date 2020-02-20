@@ -84,4 +84,15 @@ export default class Todos extends VuexModule {
     this.context.commit("toggleTodoCompleted", id);
     this.context.commit("submitAllTodos");
   }
+  @Action
+  async asyncFetchFakeTodos() {
+    await fetch("https://reqres.in/api/users?page=2")
+      .then(res => res.json())
+      .then(users => {
+        users.data.forEach((user: Record<string, string>) => {
+          this.context.commit("addTodo", user.email);
+        });
+      });
+    this.context.commit("submitAllTodos");
+  }
 }

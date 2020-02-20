@@ -2,6 +2,7 @@
   <v-app-bar app dense fixed color="primary">
     <v-toolbar-title>vueTodoApp</v-toolbar-title>
     <v-spacer></v-spacer>
+    <slot></slot>
     <v-btn icon @click="handleToggleDarkTheme">
       <v-icon>mdi-theme-light-dark</v-icon>
     </v-btn>
