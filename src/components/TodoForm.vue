@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit="handleSubmit" id="todo-form">
+  <v-form @submit.prevent="handleSubmit" id="todo-form">
     <v-textarea
       label="What do you need to do?"
       v-model.trim="title"
@@ -17,8 +17,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class TodoForm extends Vue {
   private title = "";
 
-  handleSubmit(event: Event): void {
-    event.preventDefault();
+  handleSubmit() {
     this.$store.dispatch("asyncAddTodo", this.title).then(() => {
       this.title = "";
     });
