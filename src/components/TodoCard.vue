@@ -1,13 +1,12 @@
 <template>
   <v-card
     class="card"
+    elevation="10"
     draggable="true"
+    :loading="unsaved"
     @dragstart="dragStart"
     @drop="drop"
     @dragover="allowDrop"
-    elevation="10"
-    :class="{ completed }"
-    :loading="unsaved"
   >
     <v-textarea
       class="headline"
@@ -28,11 +27,10 @@
       />
       <v-spacer></v-spacer>
       <v-btn
-        @click="handleDelete"
-        right
-        raised
+        text
         class="delete-button"
-        color="primary"
+        color="red accent-4"
+        @click="handleDelete"
       >
         Delete
       </v-btn>
