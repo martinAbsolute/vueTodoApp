@@ -57,12 +57,10 @@ export default class Todos extends VuexModule {
     const todos = [...this.todos];
     const firstIndex = todos.findIndex((todo: Todo) => todo.id === firstId);
     const secondIndex = todos.findIndex((todo: Todo) => todo.id === secondId);
-    if (firstIndex !== undefined && secondIndex !== undefined) {
-      const temp = todos[firstIndex];
-      todos[firstIndex] = todos[secondIndex];
-      todos[secondIndex] = temp;
-      this.todos = todos;
-    }
+    const temp = todos[firstIndex];
+    todos[firstIndex] = todos[secondIndex];
+    todos[secondIndex] = temp;
+    this.todos = todos;
   }
 
   @Action
