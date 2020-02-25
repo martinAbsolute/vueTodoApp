@@ -12,15 +12,15 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { ADD_TODO } from "@/store/types/mutations";
 
 @Component
 export default class TodoForm extends Vue {
   private title = "";
 
   handleSubmit() {
-    this.$store.dispatch("asyncAddTodo", this.title).then(() => {
-      this.title = "";
-    });
+    this.$store.commit(ADD_TODO, this.title);
+    this.title = "";
   }
 }
 </script>

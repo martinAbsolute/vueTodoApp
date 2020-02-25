@@ -1,52 +1,59 @@
 import uuid from "uuid";
-import Todo from "@/types/Todo";
+import Todo from "@/models/Todo";
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
+import todoLocalStorage from "@/services/todoLocalStorage";
+import fakeApiService from "@/services/fakeApi";
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
+  TOGGLE_TODO,
+  SWAP_TODOS
+} from "@/store/types/mutations";
+import { FETCH_TODOS } from "@/store/types/actions";
 
 @Module
 export default class Todos extends VuexModule {
-  todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
+  todos: Todo[] = todoLocalStorage.getTodos();
+
   get todoCount() {
     return this.todos.length;
   }
-  @Mutation
-  submitAllTodos() {
-    localStorage.setItem("todos", JSON.stringify(this.todos));
-  }
 
   @Mutation
-  addTodo(title: string) {
+  [ADD_TODO](title: string) {
     const newTodo = {
       id: uuid.v4(),
       title,
       completed: false
     };
     this.todos = [...this.todos, newTodo];
+    todoLocalStorage.saveTodos(this.todos);
   }
 
   @Mutation
-  deleteTodo({ id }: { id: string }) {
+  [DELETE_TODO]({ id }: { id: string }) {
     this.todos = this.todos.filter((todo: Todo) => todo.id !== id);
+    todoLocalStorage.saveTodos(this.todos);
   }
 
   @Mutation
-  editTodo({ id, title }: { id: string; title: string }) {
+  [EDIT_TODO]({ id, title }: { id: string; title: string }) {
     const todoIndex = this.todos.findIndex((todo: Todo) => todo.id === id);
-    if (todoIndex !== undefined) {
-      this.todos[todoIndex].title = title;
-      this.todos[todoIndex].completed = false;
-    }
+    this.todos[todoIndex].title = title;
+    this.todos[todoIndex].completed = false;
+    todoLocalStorage.saveTodos(this.todos);
   }
 
   @Mutation
-  toggleTodoCompleted({ id }: { id: string }) {
+  [TOGGLE_TODO]({ id }: { id: string }) {
     const todoIndex = this.todos.findIndex((todo: Todo) => todo.id === id);
-    if (todoIndex !== undefined) {
-      this.todos[todoIndex].completed = !this.todos[todoIndex].completed;
-    }
+    this.todos[todoIndex].completed = !this.todos[todoIndex].completed;
+    todoLocalStorage.saveTodos(this.todos);
   }
 
   @Mutation
-  swapTodos({ firstId, secondId }: { firstId: string; secondId: string }) {
+  [SWAP_TODOS]({ firstId, secondId }: { firstId: string; secondId: string }) {
     const todos = [...this.todos];
     const firstIndex = todos.findIndex((todo: Todo) => todo.id === firstId);
     const secondIndex = todos.findIndex((todo: Todo) => todo.id === secondId);
@@ -59,40 +66,15 @@ export default class Todos extends VuexModule {
   }
 
   @Action
-  asyncAddTodo(title: string) {
-    this.context.commit("addTodo", title);
-    this.context.commit("submitAllTodos");
-  }
-
-  @Action
-  asyncDeleteTodo(id: string) {
-    this.context.commit("deleteTodo", id);
-    this.context.commit("submitAllTodos");
-  }
-  @Action
-  asyncEditTodo({ id, title }: { id: string; title: string }) {
-    this.context.commit("editTodo", { id, title });
-    this.context.commit("submitAllTodos");
-  }
-  @Action
-  asyncSwapTodos({ firstId, secondId }: { firstId: string; secondId: string }) {
-    this.context.commit("swapTodos", { firstId, secondId });
-    this.context.commit("submitAllTodos");
-  }
-  @Action
-  asyncToggleTodoCompleted(id: string) {
-    this.context.commit("toggleTodoCompleted", id);
-    this.context.commit("submitAllTodos");
-  }
-  @Action
-  async asyncFetchFakeTodos() {
-    await fetch("https://reqres.in/api/users?page=2")
-      .then(res => res.json())
+  async [FETCH_TODOS]() {
+    await fakeApiService
+      .get("users?page=2")
+      .then(response => response.data)
       .then(users => {
         users.data.forEach((user: Record<string, string>) => {
-          this.context.commit("addTodo", user.email);
+          this.context.commit(ADD_TODO, user.email);
         });
       });
-    this.context.commit("submitAllTodos");
+    todoLocalStorage.saveTodos(this.todos);
   }
 }

@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import TodoCard from "@/components/TodoCard.vue";
-import Todo from "@/types/Todo";
+import Todo from "@/models/Todo";
 
 @Component({
   components: {

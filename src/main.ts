@@ -4,7 +4,11 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 
+import FakeApiService from "@/services/fakeApi";
+
 Vue.config.productionTip = false;
+
+FakeApiService.init();
 
 new Vue({
   router,

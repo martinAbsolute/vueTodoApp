@@ -7,13 +7,14 @@
 <script>
 import { Component, Vue } from "vue-property-decorator";
 import fetchAlertMixin from "@/mixins/fetchAlertMixin";
+import { FETCH_TODOS } from "@/store/types/actions";
 
 @Component({
   mixins: [fetchAlertMixin]
 })
 export default class FakeTodoFetcher extends Vue {
   handleFetchFakeClick() {
-    this.$store.dispatch("asyncFetchFakeTodos");
+    this.$store.dispatch(FETCH_TODOS);
   }
 }
 </script>

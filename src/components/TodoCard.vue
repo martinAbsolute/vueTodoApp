@@ -5,8 +5,8 @@
     draggable="true"
     :loading="unsaved"
     @dragstart="dragStart"
-    @drop="drop"
-    @dragover="allowDrop"
+    @drop.prevent="drop"
+    @dragover.prevent
   >
     <v-textarea
       class="headline"
@@ -19,8 +19,7 @@
     />
     <v-card-actions class="card-action-area">
       <v-checkbox
-        v-model="completed"
-        class="todo-checkbox"
+        :value="completed"
         :indeterminate="unsaved"
         :disabled="unsaved"
         @change="handleToggleComplete"
@@ -41,6 +40,12 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import _ from "lodash";
+import {
+  EDIT_TODO,
+  DELETE_TODO,
+  TOGGLE_TODO,
+  SWAP_TODOS
+} from "@/store/types/mutations";
 
 @Component
 export default class TaskCard extends Vue {
@@ -64,19 +69,16 @@ export default class TaskCard extends Vue {
   }
 
   handleEdit() {
-    this.$store
-      .dispatch("asyncEditTodo", { id: this.id, title: this.editableTitle })
-      .then(() => {
-        this.unsaved = false;
-      });
+    this.$store.commit(EDIT_TODO, { id: this.id, title: this.editableTitle });
+    this.unsaved = false;
   }
 
   handleDelete() {
-    this.$store.dispatch("asyncDeleteTodo", { id: this.id });
+    this.$store.commit(DELETE_TODO, { id: this.id });
   }
 
   handleToggleComplete() {
-    this.$store.dispatch("asyncToggleTodoCompleted", { id: this.id });
+    this.$store.commit(TOGGLE_TODO, { id: this.id });
   }
 
   dragStart(event: DragEvent) {
@@ -85,15 +87,10 @@ export default class TaskCard extends Vue {
     }
   }
 
-  allowDrop(event: DragEvent) {
-    event.preventDefault();
-  }
-
   drop(event: DragEvent) {
-    event.preventDefault();
     if (event.dataTransfer) {
       const draggedId = event.dataTransfer.getData("id");
-      this.$store.dispatch("asyncSwapTodos", {
+      this.$store.commit(SWAP_TODOS, {
         firstId: draggedId,
         secondId: this.id
       });
