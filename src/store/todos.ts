@@ -1,7 +1,7 @@
 import uuid from "uuid";
 import Todo from "@/models/Todo";
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
-import todoLocalStorage from "@/services/todoLocalStorage";
+import todoLocalStorageService from "@/services/todoLocalStorage";
 import fakeApiService from "@/services/fakeApi";
 import {
   ADD_TODO,
@@ -14,7 +14,7 @@ import { FETCH_TODOS } from "@/store/types/actions";
 
 @Module
 export default class Todos extends VuexModule {
-  todos: Todo[] = todoLocalStorage.getTodos();
+  todos: Todo[] = todoLocalStorageService.getTodos();
 
   get todoCount() {
     return this.todos.length;
@@ -28,13 +28,13 @@ export default class Todos extends VuexModule {
       completed: false
     };
     this.todos = [...this.todos, newTodo];
-    todoLocalStorage.saveTodos(this.todos);
+    todoLocalStorageService.saveTodos(this.todos);
   }
 
   @Mutation
   [DELETE_TODO]({ id }: { id: string }) {
     this.todos = this.todos.filter((todo: Todo) => todo.id !== id);
-    todoLocalStorage.saveTodos(this.todos);
+    todoLocalStorageService.saveTodos(this.todos);
   }
 
   @Mutation
@@ -42,14 +42,14 @@ export default class Todos extends VuexModule {
     const todoIndex = this.todos.findIndex((todo: Todo) => todo.id === id);
     this.todos[todoIndex].title = title;
     this.todos[todoIndex].completed = false;
-    todoLocalStorage.saveTodos(this.todos);
+    todoLocalStorageService.saveTodos(this.todos);
   }
 
   @Mutation
   [TOGGLE_TODO]({ id }: { id: string }) {
     const todoIndex = this.todos.findIndex((todo: Todo) => todo.id === id);
     this.todos[todoIndex].completed = !this.todos[todoIndex].completed;
-    todoLocalStorage.saveTodos(this.todos);
+    todoLocalStorageService.saveTodos(this.todos);
   }
 
   @Mutation
@@ -73,6 +73,6 @@ export default class Todos extends VuexModule {
           this.context.commit(ADD_TODO, user.email);
         });
       });
-    todoLocalStorage.saveTodos(this.todos);
+    todoLocalStorageService.saveTodos(this.todos);
   }
 }
