@@ -1,16 +1,16 @@
 <template>
-  <v-btn type="button" @click="fetchAlert(handleFetchFakeClick)">
+  <v-btn type="button" @click="userConfirm(handleFetchFakeClick)">
     Fetch Fake
   </v-btn>
 </template>
 
 <script>
 import { Component, Vue } from "vue-property-decorator";
-import fetchAlertMixin from "@/mixins/fetchAlertMixin";
+import userConfirmMixin from "@/mixins/userConfirmMixin";
 import { FETCH_TODOS } from "@/store/types/actions";
 
 @Component({
-  mixins: [fetchAlertMixin]
+  mixins: [userConfirmMixin]
 })
 export default class FakeTodoFetcher extends Vue {
   handleFetchFakeClick() {
